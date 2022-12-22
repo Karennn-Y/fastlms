@@ -1,4 +1,4 @@
-package com.zerobase.fastlms;
+package com.zerobase.fastlms.main.controller;
 
 // MainPage 클래스를 만든 목적!!
 // 맵핑하기 위해서
@@ -10,6 +10,8 @@ package com.zerobase.fastlms;
 // 1. 클래스 (속성. 메소드로 이루어짐) -- 새로 생길 때마다 클래스가 계속 생겨야 됨 !!탈락!!
 //
 
+import com.zerobase.fastlms.components.MailComponents;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,10 +20,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+@RequiredArgsConstructor
 @Controller
 public class MainController {
+
+    private final MailComponents mailComponents;
     @RequestMapping("/")
     public String index() {
+
+//        String email = "yoonyoonsung4@gmail.com";
+//        String subject = " 안녕하세요. 제로베이스 입니다. ";
+//        String text = "<p>안녕하세요</p><p>반갑습니다.</p>";
+//
+//        mailComponents.sendMail(email, subject, text);
 
         return "index";
     }
@@ -42,26 +53,34 @@ public class MainController {
     //request -> WEB -> SERVER
     //response -> SERVER -> WEB
 
+//
+//    @RequestMapping("/hello")
+//    public void hello (HttpServletRequest request, HttpServletResponse response) throws IOException {
+//
+//        response.setContentType("text/html;charset=UTF-8");
+//
+//        PrintWriter printWriter = response.getWriter();
+//
+//        String msg =  "<html>" +
+//                "<head>" +
+//                "<meta charset=\"UTF-8\">" +
+//                "</head>" +
+//                "<body>" +
+//                "<p>hello</p>" +
+//                "<p>fastlms website!!</p>" +
+//                "<p>안녕하세요!!!!<p>" +
+//                "</body>" +
+//                "</html>";
+//
+//        printWriter.write(msg);
+//        printWriter.close();
+//    }
 
-    @RequestMapping("/hello")
-    public void hello (HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @RequestMapping("/error/denied")
+    public String errorDenied() {
 
-        response.setContentType("text/html;charset=UTF-8");
+        return "error/denied";
 
-        PrintWriter printWriter = response.getWriter();
-
-        String msg =  "<html>" +
-                "<head>" +
-                "<meta charset=\"UTF-8\">" +
-                "</head>" +
-                "<body>" +
-                "<p>hello</p>" +
-                "<p>fastlms website!!</p>" +
-                "<p>안녕하세요!!!!<p>" +
-                "</body>" +
-                "</html>";
-
-        printWriter.write(msg);
-        printWriter.close();
     }
+
 }
