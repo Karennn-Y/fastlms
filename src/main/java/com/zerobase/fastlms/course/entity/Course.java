@@ -38,4 +38,7 @@ public class Course {
     LocalDateTime regDt;
     // 수정일
     LocalDateTime udtDt;
+
+    String filename;
+    String urlFilename;
 }

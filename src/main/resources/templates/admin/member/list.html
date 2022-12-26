@@ -74,6 +74,9 @@
                     <th>
                         관리자여부
                     </th>
+                    <th>
+                        마지막 로그인 일자
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -97,6 +100,9 @@
                     <td>
                         <p th:if="${x.adminYn}">Y</p>
                         <p th:if="${x.adminYn eq false}">N</p>
+                    </td>
+                    <td>
+                        <p th:text="${x.loginDtText}"></p>
                     </td>
                 </tr>
             </tbody>

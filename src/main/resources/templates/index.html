@@ -3,11 +3,55 @@
     <head>
         <meta charset="UTF-8">
         <title>메인 페이지</title>
+        <style>
+            .home__slider {
+                margin: 0px;
+                width: 800px;
+            }
+            img {
+                width : 100%;
+                height: 70%;
+            }
+        </style>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+        <script>
+            $(function() {
+                $('.bxslider').bxSlider({
+                    touchEnabled : (navigator.maxTouchPoints > 0),
+                    auto: true,
+                    autoControls: true, // 컨트롤 버튼(재생/정지) 표시
+                    stopAutoOnClick: true,
+                    // 클릭해서 자동 실행 멈출 수 있도록 지정
+                    pager:true
+                });
+            });
+        </script>
     </head>
     <body>
         <h1> 메인 페이지 </h1>
 
         <div th:replace="/fragment/layout.html :: fragment-body-menu"></div>
+
+
+
+        <div class="home__slider">
+            <div class="bxslider">
+                <div class="images"  th:each="x : ${list}">
+                    <p th:if="${x.open eq 'REDIRECT'}">
+                        <a th:href="${x.url}"><img th:src="${x.urlFilename}"></a>
+                    </p>
+                    <p th:if="${x.open eq 'NEW'}">
+                        <a th:href="${x.url}"  target="_blank"><img th:src="${x.urlFilename}"></a>
+                    </p>
+
+
+                </div>
+            </div>
+
+        </div>
 
 
     </body>

@@ -1,11 +1,13 @@
 package com.zerobase.fastlms.configuration;
 
+import com.zerobase.fastlms.admin.service.LoginHistoryService;
 import com.zerobase.fastlms.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +21,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final MemberService memberService;
 
+    private final LoginHistoryService loginHistoryService;
+
     @Bean
     PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -26,6 +30,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     UserAuthenticationFailureHandler getFailureHandler() {
         return new UserAuthenticationFailureHandler();
+    }
+
+    @Bean
+    UserAuthenticationSuccessHandler getSuccessHandler() {
+        return new UserAuthenticationSuccessHandler(loginHistoryService);
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+
+        web.ignoring().antMatchers("/favicon.ico", "/files/**");
+        super.configure(web);
     }
 
     @Override
@@ -50,6 +66,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.formLogin()
                 .loginPage("/member/login")
+                .successHandler(getSuccessHandler())
                 .failureHandler(getFailureHandler())
                 .permitAll();
 

@@ -49,6 +49,11 @@
     <script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function () {
+            $('#searchCourseId').on('change', function () {
+                var id = $(this).val();
+
+                location.href = '?searchCourseId=' + id;
+            });
 
             $('.row-buttons button').on('click', function() {
 
@@ -83,9 +88,16 @@
     <div class="list">
 
         <div class="buttons">
+            <select id="searchCourseId">
+                <option value="">전체 강좌</option>
+                <option th:each="x : ${courseList}"
+                        th:selected="${#strings.equals(param.searchCourseId, x.id)}"
+                        th:value="${x.id}" th:text="${x.subject}">전체 강좌</option>
+            </select>
             <p class="total-count">전체 <span th:text="${totalCount}"></span>개</p>
 
         </div>
+
 
         <table>
             <thead>
@@ -130,7 +142,7 @@
                     <p th:if="${x.status eq 'COMPLETE'}">결제완료</p>
                     <p th:if="${x.status eq 'CANCEL'}">수강취소</p>
                 </td>
-                <td >
+                <td>
                     <div class="row-buttons" th:if="${x.status eq 'REQ'}">
                         <input type="hidden" name="id" th:value="${x.id}">
                         <button value="COMPLETE" type="button"> 결제완료 처리 </button>
@@ -139,12 +151,17 @@
                 </td>
 
             </tr>
+            <tr th:if="${#lists.isEmpty(list)}">
+                <td colspan="8">
+                    <p class="nothing">내용이 없습니다.</p>
+                </td>
+            </tr>
 
             </tbody>
         </table>
 
     </div>
-    <div class="pager" th:utext="${pager}">
+    <div class="pager" th:if="${#lists.size(list) > 0}" th:utext="${pager}">
 
     </div>
 

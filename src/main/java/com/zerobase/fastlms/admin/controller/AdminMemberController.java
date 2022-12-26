@@ -1,26 +1,27 @@
 package com.zerobase.fastlms.admin.controller;
 
 
+import com.zerobase.fastlms.admin.dto.LoginHistoryDto;
 import com.zerobase.fastlms.admin.dto.MemberDto;
-import com.zerobase.fastlms.admin.model.MemberParam;
+import com.zerobase.fastlms.admin.model.LoginHistoryParam;
 import com.zerobase.fastlms.admin.model.MemberInput;
+import com.zerobase.fastlms.admin.model.MemberParam;
+import com.zerobase.fastlms.admin.service.LoginHistoryService;
 import com.zerobase.fastlms.course.controller.BaseController;
 import com.zerobase.fastlms.member.service.MemberService;
-import com.zerobase.fastlms.util.PageUtil;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
 public class AdminMemberController extends BaseController {
 
     private final MemberService memberService;
+    private final LoginHistoryService loginHistoryService;
 
     @GetMapping("/admin/member/list.do")
     public String list(Model model, MemberParam parameter) {
@@ -45,12 +46,16 @@ public class AdminMemberController extends BaseController {
     }
 
     @GetMapping("/admin/member/detail.do")
-    public String detail(Model model, MemberParam parameter) {
+    public String detail(Model model
+            , MemberParam parameter
+            , LoginHistoryParam historyParam) {
 
         parameter.init();
-
+        historyParam.init();
         MemberDto member = memberService.detail(parameter.getUserId());
+        List<LoginHistoryDto> logins = loginHistoryService.list(historyParam);
         model.addAttribute("member", member);
+        model.addAttribute("login", logins);
 
         return "admin/member/detail";
     }

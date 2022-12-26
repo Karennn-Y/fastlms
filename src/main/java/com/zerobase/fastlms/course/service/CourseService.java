@@ -33,4 +33,9 @@ public interface CourseService {
 
     // 수강신청
     ServiceResult req(TakeCourseInput parameter);
+
+    // 전체 강좌 목록
+    List<CourseDto> listAll();
+    // 파일 이름 가져오기
+    String getFile(CourseInput parameter);
 }

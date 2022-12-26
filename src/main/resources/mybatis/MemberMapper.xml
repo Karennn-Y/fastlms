@@ -43,8 +43,9 @@
     <select id="selectList"
             resultType="com.zerobase.fastlms.admin.dto.MemberDto">
 
-        select *
-        from member
+        select m.*
+        , (select login_dt from login_history where user_id = m.user_id order by login_dt desc limit 1) as login_dt
+        from member m
         where 1 = 1
             <include refid="selectListWhere"/>
 
